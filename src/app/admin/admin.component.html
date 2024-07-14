@@ -1,0 +1,56 @@
+<div class="header-section" id="buttonContainer">
+    <div class="button-group active">
+        <div class="dropdown">
+            <button class="dropbtn">User Management</button>
+            <div class="dropdown-content">
+                <a routerLink="user-management" routerLinkActive="active">Users</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Job</button>
+            <div class="dropdown-content">
+                <a routerLink="job-titles" routerLinkActive="active">Job Titles</a>
+                <a routerLink="pay-grades" routerLinkActive="active">Pay Grades</a>
+                <a routerLink="employment-status" routerLinkActive="active">Employment Status</a>
+                <a routerLink="job-categories" routerLinkActive="active">Job Categories</a>
+                <a routerLink="work-shifts" routerLinkActive="active">Work Shifts</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Organization</button>
+            <div class="dropdown-content">
+                <a routerLink="general-information" routerLinkActive="active">General Information</a>
+                <a routerLink="locations" routerLinkActive="active">Locations</a>
+                <a routerLink="structure" routerLinkActive="active">Structure</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Qualifications</button>
+            <div class="dropdown-content">
+                <a routerLink="skills" routerLinkActive="active">Skills</a>
+                <a routerLink="education" routerLinkActive="active">Education</a>
+                <a routerLink="licenses" routerLinkActive="active">Licenses</a>
+                <a routerLink="languages" routerLinkActive="active">Languages</a>
+                <a routerLink="memberships" routerLinkActive="active">Memberships</a>
+            </div>
+        </div>
+        <button class="dropbtn" routerLink="nationalities" routerLinkActive="active">Nationalities</button>
+        <button class="dropbtn" routerLink="corporate-branding" routerLinkActive="active">Corporate Branding</button>
+        <div class="dropdown">
+            <button class="dropbtn">Configuration</button>
+            <div class="dropdown-content">
+                <a routerLink="email-configuration" routerLinkActive="active">Email Configuration</a>
+                <a routerLink="email-subscriptions" routerLinkActive="active">Email Subscriptions</a>
+                <a routerLink="localization" routerLinkActive="active">Localization</a>
+                <a routerLink="language-packages" routerLinkActive="active">Language Packages</a>
+                <a routerLink="modules" routerLinkActive="active">Modules</a>
+                <a routerLink="social-media-authentication" routerLinkActive="active">Social Media Authentication</a>
+                <a routerLink="register-oauth-client" routerLinkActive="active">Register OAuth Client</a>
+                <a routerLink="ldap-configuration" routerLinkActive="active">LDAP Configuration</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="contentContainer">
+    <router-outlet></router-outlet>
+</div>

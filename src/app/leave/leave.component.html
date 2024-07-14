@@ -1,0 +1,35 @@
+<div class="header-section" id="buttonContainer">
+    <div class="button-group active">
+        <button class="dropbtn" routerLink="apply" routerLinkActive="active">Apply</button>
+        <button class="dropbtn" routerLink="my-leave" routerLinkActive="active">My Leave</button>
+        <div class="dropdown">
+            <button class="dropbtn">Entitlements</button>
+            <div class="dropdown-content">
+                <a routerLink="add-entitlements" routerLinkActive="active">Add Entitlements</a>
+                <a routerLink="employee-entitlements" routerLinkActive="active">Employee Entitlements</a>
+                <a routerLink="my-entitlements" routerLinkActive="active">My Entitlements</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Reports</button>
+            <div class="dropdown-content">
+                <a routerLink="leave-entitlements-and-usage-reports" routerLinkActive="active">Leave Entitlements and Usage Reports</a>
+                <a routerLink="my-leave-entitlements-and-usage-reports" routerLinkActive="active">My Leave Entitlements and Usage Reports</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Configure</button>
+            <div class="dropdown-content">
+                <a routerLink="leave-period" routerLinkActive="active">Leave Period</a>
+                <a routerLink="leave-types" routerLinkActive="active">Leave Types</a>
+                <a routerLink="work-week" routerLinkActive="active">Work Week</a>
+                <a routerLink="holidays" routerLinkActive="active">Holidays</a>
+            </div>
+        </div>
+        <button class="dropbtn" routerLink="leave-list" routerLinkActive="active">Leave List</button>
+        <button class="dropbtn" routerLink="assign-leave" routerLinkActive="active">Assign Leave</button>
+    </div>
+</div>
+<div id="contentContainer">
+    <router-outlet></router-outlet>
+</div>
