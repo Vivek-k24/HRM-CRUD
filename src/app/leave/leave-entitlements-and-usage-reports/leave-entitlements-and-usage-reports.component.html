@@ -1,88 +1,148 @@
-<div class="container" style="width: 1000px; height: 1200px; margin-top: 20px; padding: 20px; border: 1px solid #dee2e6; background-color: #f8f9fa; border-radius: 8px;">
-    <h3>Leave Entitlements and Usage Report</h3>
-    <form [formGroup]="leaveReportForm" (ngSubmit)="onSubmit()">
+<div class="container">
+  <h3>Leave Entitlements and Usage Report</h3>
+  <form [formGroup]="leaveReportForm" (ngSubmit)="onSubmit()">
+    <div class="row form-group">
+      <div class="col-md-12">
+        <label>Generate For</label>
+        <div class="radio-group">
+          <label><input type="radio" formControlName="generateFor" value="leaveType"> Leave Type</label>
+          <label><input type="radio" formControlName="generateFor" value="employee"> Employee</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Form -->
+    <div *ngIf="leaveReportForm.get('generateFor')?.value === 'employee'">
       <div class="row form-group">
         <div class="col-md-12">
-          <label>Generate For</label>
-          <div class="radio-group">
-            <label><input type="radio" formControlName="generateFor" value="leaveType"> Leave Type</label>
-            <label><input type="radio" formControlName="generateFor" value="employee" checked> Employee</label>
-          </div>
+          <label for="employeeName">Employee Name *</label>
+          <input type="text" id="employeeName" class="form-control" formControlName="employeeName" placeholder="Type for hints...">
         </div>
       </div>
-      <div *ngIf="leaveReportForm.get('generateFor')?.value === 'employee'">
-        <div class="row form-group">
-          <div class="col-md-12">
-            <label for="employeeName">Employee Name *</label>
-            <input type="text" id="employeeName" class="form-control" formControlName="employeeName" placeholder="Type for hints...">
-          </div>
-        </div>
-      </div>
-      <div *ngIf="leaveReportForm.get('generateFor')?.value === 'leaveType'">
-        <div class="row form-group">
-          <div class="col-md-12">
-            <label for="leaveType">Leave Type *</label>
-            <input type="text" id="leaveType" class="form-control" formControlName="leaveType">
-          </div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-6">
-            <label for="leavePeriodStart">Leave Period Start</label>
+      <div class="row form-group">
+        <div class="col-md-12">
+          <label for="leavePeriodStart">Leave Period *</label>
+          <div class="date-range-group">
             <input type="date" id="leavePeriodStart" class="form-control" formControlName="leavePeriodStart">
-          </div>
-          <div class="col-md6">
-            <label for="leavePeriodEnd">Leave Period End</label>
+            <span>to</span>
             <input type="date" id="leavePeriodEnd" class="form-control" formControlName="leavePeriodEnd">
           </div>
         </div>
-        <div class="row form-group">
-          <div class="col-md-12">
-            <label for="location">Location</label>
-            <input type="text" id="location" class="form-control" formControlName="location">
-          </div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-12">
-            <label for="subUnit">Sub Unit</label>
-            <input type="text" id="subUnit" class="form-control" formControlName="subUnit">
-          </div>
-        </div>
-        <div class="row form-group">
-          <div class="col-md-12">
-            <label for="jobTitle">Job Title</label>
-            <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle">
-          </div>
-        </div>
       </div>
-      <div class="btn-group">
-        <button type="submit" class="btn btn-primary">Generate</button>
-      </div>
-    </form>
-    
-    <div *ngIf="showTable">
-      <h3>Generated Leave Records</h3>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Leave Type</th>
-            <th>Leave Entitlements (Days)</th>
-            <th>Leave Pending Approval (Days)</th>
-            <th>Leave Scheduled (Days)</th>
-            <th>Leave Taken (Days)</th>
-            <th>Leave Balance (Days)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let leave of filteredRecords">
-            <td>{{ leave.leaveType }}</td>
-            <td>{{ leave.entitlements }}</td>
-            <td>{{ leave.pendingApproval }}</td>
-            <td>{{ leave.scheduled }}</td>
-            <td>{{ leave.taken }}</td>
-            <td>{{ leave.balance }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+
+    <!-- Leave Type Form -->
+    <div *ngIf="leaveReportForm.get('generateFor')?.value === 'leaveType'">
+      <div class="row form-group select-group">
+        <div class="col-md-6">
+          <label for="leaveType">Leave Type</label>
+          <select id="leaveType" class="form-control" formControlName="leaveType">
+            <option value="CAN - Bereavement">CAN - Bereavement</option>
+            <option value="CAN - FMLA">CAN - FMLA</option>
+            <option value="CAN - Maternity">CAN - Maternity</option>
+            <option value="CAN - Personal">CAN - Personal</option>
+            <option value="CAN - Vacation">CAN - Vacation</option>
+            <option value="US - Bereavement">US - Bereavement</option>
+            <option value="US - FMLA">US - FMLA</option>
+            <option value="US - Maternity">US - Maternity</option>
+            <option value="US - Personal">US - Personal</option>
+            <option value="US - Vacation">US - Vacation</option>
+
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="leavePeriodStart">Leave Period *</label>
+          <div class="date-range-group">
+            <input type="date" id="leavePeriodStart" class="form-control" formControlName="leavePeriodStart">
+            <span>to</span>
+            <input type="date" id="leavePeriodEnd" class="form-control" formControlName="leavePeriodEnd">
+          </div>
+        </div>
+      </div>
+      <div class="row form-group select-group">
+        <div class="col-md-6">
+          <label for="location">Location</label>
+          <select id="location" class="form-control" formControlName="location">
+            <option value="">-- Select --</option>
+            <option value="Canadian Regional HQ">Canadian Regional HQ</option>
+            <option value="HQ- CA, USA">HQ- CA, USA</option>
+            <option value="New York Sales Office">New York Sales Office</option>
+            <option value="Texas R & D">Texas R & D</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="subUnit">Sub Unit</label>
+          <select id="subUnit" class="form-control" formControlName="subUnit">
+            <option value="">-- Select --</option>
+            <option value="Administration">Administration</option>
+            <option value="Development">Development</option>
+            <option value="Quality Assurance">Quality Assurance</option>
+            <option value="TechOps">TechOps</option>
+            <option value="Sales">Sales</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Technical Support">Technical Support</option>
+            <option value="Finance">Finance</option>
+            <option value="Human Resources">Human Resources</option>
+          </select>
+        </div>
+      </div>
+      <div class="row form-group select-group">
+        <div class="col-md-6">
+          <label for="jobTitle">Job Title</label>
+          <select id="jobTitle" class="form-control" formControlName="jobTitle">
+            <option value="">-- Select --</option>
+            <option value="Account Assistant">Account Assistant</option>
+            <option value="Automation Tester">Automation Tester</option>
+            <option value="Chief Executive Officer">Chief Executive Officer</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="includePastEmployees">Include Past Employees</label>
+          <input type="checkbox" id="includePastEmployees" class="form-control" formControlName="includePastEmployees">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary">Generate</button>
+    </div>
+  </form>
+
+  <!-- Table to display the report -->
+  <div *ngIf="showTable" class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Employee</th>
+          <th>Location</th>
+          <th>Sub Unit</th>
+          <th>Job Title</th>
+          <th>Leave Type</th>
+          <th>Entitlements (Days)</th>
+          <th>Pending Approval (Days)</th>
+          <th>Scheduled (Days)</th>
+          <th>Taken (Days)</th>
+          <th>Balance (Days)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let record of filteredRecords">
+          <ng-container *ngFor="let leave of record.leaveRecords">
+            <tr *ngIf="!leaveReportForm.get('leaveType')?.value || leave.leaveType === leaveReportForm.get('leaveType')?.value">
+              <td>{{ record.employee }}</td>
+              <td>{{ record.location }}</td>
+              <td>{{ record.subUnit }}</td>
+              <td>{{ record.jobTitle }}</td>
+              <td>{{ leave.leaveType }}</td>
+              <td>{{ leave.entitlements }}</td>
+              <td>{{ leave.pendingApproval }}</td>
+              <td>{{ leave.scheduled }}</td>
+              <td>{{ leave.taken }}</td>
+              <td>{{ leave.balance }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
   </div>
-  
+</div>

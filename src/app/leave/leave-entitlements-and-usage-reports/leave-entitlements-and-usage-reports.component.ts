@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { LeaveRecordsService } from '../../services/leave-records.service';
+import { HttpClient } from '@angular/common/http';
 
 interface LeaveRecord {
   leaveType: string;
@@ -13,7 +13,7 @@ interface LeaveRecord {
   leavePeriodEnd: string;
 }
 
-interface EmployeeData {
+interface EmployeeRecord {
   employee: string;
   location: string;
   subUnit: string;
@@ -28,46 +28,58 @@ interface EmployeeData {
 })
 export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
   leaveReportForm: FormGroup;
+  records: EmployeeRecord[] = [];
+  filteredRecords: EmployeeRecord[] = [];
   showTable = false;
-  leaveRecords: EmployeeData[] = [];
-  filteredRecords: LeaveRecord[] = [];
 
-  constructor(private fb: FormBuilder, private leaveRecordsService: LeaveRecordsService) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.leaveReportForm = this.fb.group({
-      generateFor: ['employee'],
+      generateFor: [''],
       employeeName: [''],
       leaveType: [''],
       leavePeriodStart: [''],
       leavePeriodEnd: [''],
       location: [''],
       subUnit: [''],
-      jobTitle: ['']
+      jobTitle: [''],
+      includePastEmployees: [false]
     });
   }
 
   ngOnInit(): void {
-    this.leaveRecordsService.getLeaveRecords().subscribe(response => {
-      this.leaveRecords = response['employee-data'];
+    this.http.get<{ 'employee-data': EmployeeRecord[] }>('/assets/employee-data.json').subscribe(data => {
+      this.records = data['employee-data'];
     });
   }
 
   onSubmit(): void {
+    this.filterRecords();
     this.showTable = true;
-    const formValues = this.leaveReportForm.value;
+  }
 
-    if (formValues.generateFor === 'employee') {
-      const employee = this.leaveRecords.find(record => record.employee.toLowerCase().includes(formValues.employeeName.toLowerCase()));
-      this.filteredRecords = employee ? employee.leaveRecords : [];
-    } else {
-      this.filteredRecords = this.leaveRecords.flatMap(record => record.leaveRecords)
-        .filter(leave => 
-          (formValues.leaveType ? leave.leaveType === formValues.leaveType : true) &&
-          (formValues.location ? this.leaveRecords.some(record => record.location === formValues.location && record.leaveRecords.includes(leave)) : true) &&
-          (formValues.subUnit ? this.leaveRecords.some(record => record.subUnit === formValues.subUnit && record.leaveRecords.includes(leave)) : true) &&
-          (formValues.jobTitle ? this.leaveRecords.some(record => record.jobTitle === formValues.jobTitle && record.leaveRecords.includes(leave)) : true) &&
-          (formValues.leavePeriodStart ? new Date(leave.leavePeriodStart) >= new Date(formValues.leavePeriodStart) : true) &&
-          (formValues.leavePeriodEnd ? new Date(leave.leavePeriodEnd) <= new Date(formValues.leavePeriodEnd) : true)
-        );
-    }
+  filterRecords(): void {
+    const generateFor = this.leaveReportForm.get('generateFor')?.value;
+    const employeeName = this.leaveReportForm.get('employeeName')?.value.toLowerCase();
+    const leaveType = this.leaveReportForm.get('leaveType')?.value;
+    const leavePeriodStart = this.leaveReportForm.get('leavePeriodStart')?.value;
+    const leavePeriodEnd = this.leaveReportForm.get('leavePeriodEnd')?.value;
+
+    this.filteredRecords = this.records.filter(record => {
+      let match = true;
+
+      if (generateFor === 'employee' && employeeName) {
+        match = record.employee.toLowerCase().includes(employeeName);
+      } else if (generateFor === 'leaveType' && leaveType) {
+        match = record.leaveRecords.some((leave: LeaveRecord) => leave.leaveType === leaveType);
+      }
+
+      if (leavePeriodStart && leavePeriodEnd) {
+        match = match && record.leaveRecords.some((leave: LeaveRecord) => {
+          return leave.leavePeriodStart >= leavePeriodStart && leave.leavePeriodEnd <= leavePeriodEnd;
+        });
+      }
+
+      return match;
+    });
   }
 }
