@@ -1,7 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LeaveRecordsService } from '../../services/leave-records.service';
-import { EmployeeData, LeaveRecord } from '../../models/leave-record.model';
+
+interface LeaveRecord {
+  leaveType: string;
+  entitlements: number;
+  pendingApproval: number;
+  scheduled: number;
+  taken: number;
+  balance: number;
+  leavePeriodStart: string;
+  leavePeriodEnd: string;
+}
+
+interface EmployeeData {
+  employee: string;
+  location: string;
+  subUnit: string;
+  jobTitle: string;
+  leaveRecords: LeaveRecord[];
+}
 
 @Component({
   selector: 'app-leave-entitlements-and-usage-reports',
@@ -12,28 +30,24 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
   leaveReportForm: FormGroup;
   showTable = false;
   leaveRecords: EmployeeData[] = [];
-  filteredRecords: EmployeeData[] = [];
+  filteredRecords: LeaveRecord[] = [];
 
   constructor(private fb: FormBuilder, private leaveRecordsService: LeaveRecordsService) {
     this.leaveReportForm = this.fb.group({
       generateFor: ['employee'],
       employeeName: [''],
+      leaveType: [''],
       leavePeriodStart: [''],
       leavePeriodEnd: [''],
-      leaveType: [''],
-      leavePeriod: [''],
       location: [''],
       subUnit: [''],
-      jobTitle: [''],
-      includePastEmployees: [false]
+      jobTitle: ['']
     });
   }
 
   ngOnInit(): void {
     this.leaveRecordsService.getLeaveRecords().subscribe(response => {
       this.leaveRecords = response['employee-data'];
-      this.filteredRecords = this.leaveRecords;
-      console.log('Fetched leave records:', this.leaveRecords);
     });
   }
 
@@ -42,36 +56,18 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
     const formValues = this.leaveReportForm.value;
 
     if (formValues.generateFor === 'employee') {
-      this.filteredRecords = this.leaveRecords.filter(record => 
-        (formValues.employeeName ? record.employee.toLowerCase().includes(formValues.employeeName.toLowerCase()) : true)
-        && (formValues.leavePeriodStart ? new Date(formValues.leavePeriodStart) <= new Date() : true)
-        && (formValues.leavePeriodEnd ? new Date(formValues.leavePeriodEnd) >= new Date() : true)
-      );
-    } else if (formValues.generateFor === 'leaveType') {
-      this.filteredRecords = this.leaveRecords.filter(record => 
-        record.leaveRecords.some(leave => 
-          leave.leaveType === formValues.leaveType
-        )
-        && (formValues.jobTitle ? record.jobTitle === formValues.jobTitle : true)
-        && (formValues.location ? record.location === formValues.location : true)
-        && (formValues.subUnit ? record.subUnit === formValues.subUnit : true)
-        && (formValues.leavePeriodStart ? new Date(formValues.leavePeriodStart) <= new Date() : true)
-        && (formValues.leavePeriodEnd ? new Date(formValues.leavePeriodEnd) >= new Date() : true)
-      );
+      const employee = this.leaveRecords.find(record => record.employee.toLowerCase().includes(formValues.employeeName.toLowerCase()));
+      this.filteredRecords = employee ? employee.leaveRecords : [];
     } else {
-      this.filteredRecords = this.leaveRecords;
+      this.filteredRecords = this.leaveRecords.flatMap(record => record.leaveRecords)
+        .filter(leave => 
+          (formValues.leaveType ? leave.leaveType === formValues.leaveType : true) &&
+          (formValues.location ? this.leaveRecords.some(record => record.location === formValues.location && record.leaveRecords.includes(leave)) : true) &&
+          (formValues.subUnit ? this.leaveRecords.some(record => record.subUnit === formValues.subUnit && record.leaveRecords.includes(leave)) : true) &&
+          (formValues.jobTitle ? this.leaveRecords.some(record => record.jobTitle === formValues.jobTitle && record.leaveRecords.includes(leave)) : true) &&
+          (formValues.leavePeriodStart ? new Date(leave.leavePeriodStart) >= new Date(formValues.leavePeriodStart) : true) &&
+          (formValues.leavePeriodEnd ? new Date(leave.leavePeriodEnd) <= new Date(formValues.leavePeriodEnd) : true)
+        );
     }
-
-    console.log('Filtered records:', this.filteredRecords);
-  }
-
-  editRecord(record: EmployeeData): void {
-  }
-
-  deleteRecord(record: EmployeeData): void {
-    this.leaveRecordsService.deleteLeaveRecord(record.employee).subscribe(() => {
-      this.leaveRecords = this.leaveRecords.filter(r => r.employee !== record.employee);
-      this.filteredRecords = this.leaveRecords;
-    });
   }
 }

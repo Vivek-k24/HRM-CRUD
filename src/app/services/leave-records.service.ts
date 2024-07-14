@@ -1,54 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { EmployeeData, EmployeeDataResponse } from '../models/leave-record.model';
+
+interface LeaveRecord {
+  leaveType: string;
+  entitlements: number;
+  pendingApproval: number;
+  scheduled: number;
+  taken: number;
+  balance: number;
+  leavePeriodStart: string;
+  leavePeriodEnd: string;
+}
+
+interface EmployeeData {
+  employee: string;
+  location: string;
+  subUnit: string;
+  jobTitle: string;
+  leaveRecords: LeaveRecord[];
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRecordsService {
-  private dataUrl = 'http://localhost:3000/employee-data'; // Ensure this URL is correct
+  private dataUrl = 'http://localhost:3000/employee-data';
 
   constructor(private http: HttpClient) { }
 
-  getLeaveRecords(): Observable<EmployeeDataResponse> {
-    return this.http.get<EmployeeDataResponse>(this.dataUrl);
-  }
-
-  updateLeaveRecords(records: EmployeeData[]): Observable<void> {
-    return this.http.put<void>(this.dataUrl, { 'employee-data': records });
-  }
-
-  addLeaveRecord(record: EmployeeData): Observable<void> {
-    return this.getLeaveRecords().pipe(
-      switchMap(response => {
-        const records = response['employee-data'];
-        records.push(record);
-        return this.updateLeaveRecords(records);
-      })
-    );
-  }
-
-  updateLeaveRecord(record: EmployeeData): Observable<void> {
-    return this.getLeaveRecords().pipe(
-      switchMap(response => {
-        const records = response['employee-data'];
-        const index = records.findIndex(r => r.employee === record.employee);
-        if (index !== -1) {
-          records[index] = record;
-        }
-        return this.updateLeaveRecords(records);
-      })
-    );
-  }
-
-  deleteLeaveRecord(employee: string): Observable<void> {
-    return this.getLeaveRecords().pipe(
-      switchMap(response => {
-        const records = response['employee-data'].filter(record => record.employee !== employee);
-        return this.updateLeaveRecords(records);
-      })
-    );
+  getLeaveRecords(): Observable<{ 'employee-data': EmployeeData[] }> {
+    return this.http.get<{ 'employee-data': EmployeeData[] }>(this.dataUrl);
   }
 }
