@@ -15,6 +15,16 @@
           "balance": 3.56,
           "leavePeriodStart": "2024-01-01",
           "leavePeriodEnd": "2024-12-31"
+        },
+        {
+          "leaveType": "CAN - Vacation",
+          "entitlements": 10,
+          "pendingApproval": 0,
+          "scheduled": 5,
+          "taken": 3,
+          "balance": 2,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
         }
       ]
     },
@@ -25,12 +35,156 @@
       "jobTitle": "Finance Manager",
       "leaveRecords": [
         {
-          "leaveType": "CAN - Bereavement",
-          "entitlements": 3.12,
-          "pendingApproval": 1.45,
-          "scheduled": 2.34,
-          "taken": 0.23,
-          "balance": 1.34,
+          "leaveType": "US - Maternity",
+          "entitlements": 8.5,
+          "pendingApproval": 1.5,
+          "scheduled": 2.5,
+          "taken": 4,
+          "balance": 0.5,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "JKL9 87YU",
+      "location": "Texas R & D",
+      "subUnit": "Development",
+      "jobTitle": "Automation Tester",
+      "leaveRecords": [
+        {
+          "leaveType": "US - FMLA",
+          "entitlements": 5,
+          "pendingApproval": 0,
+          "scheduled": 1,
+          "taken": 2,
+          "balance": 2,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "OPQ3 45ZX",
+      "location": "Canadian Regional HQ",
+      "subUnit": "Quality Assurance",
+      "jobTitle": "Chief Executive Officer",
+      "leaveRecords": [
+        {
+          "leaveType": "CAN - Personal",
+          "entitlements": 15,
+          "pendingApproval": 3,
+          "scheduled": 4,
+          "taken": 6,
+          "balance": 2,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "RST1 23WV",
+      "location": "HQ- CA, USA",
+      "subUnit": "Marketing",
+      "jobTitle": "Account Assistant",
+      "leaveRecords": [
+        {
+          "leaveType": "US - Personal",
+          "entitlements": 20,
+          "pendingApproval": 2,
+          "scheduled": 3,
+          "taken": 5,
+          "balance": 10,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "UVW6 54XY",
+      "location": "Texas R & D",
+      "subUnit": "TechOps",
+      "jobTitle": "Automation Tester",
+      "leaveRecords": [
+        {
+          "leaveType": "US - Vacation",
+          "entitlements": 10,
+          "pendingApproval": 1,
+          "scheduled": 2,
+          "taken": 4,
+          "balance": 3,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "XYZ9 87QW",
+      "location": "New York Sales Office",
+      "subUnit": "Sales",
+      "jobTitle": "Chief Executive Officer",
+      "leaveRecords": [
+        {
+          "leaveType": "CAN - FMLA",
+          "entitlements": 12,
+          "pendingApproval": 0,
+          "scheduled": 2,
+          "taken": 8,
+          "balance": 2,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "PQR4 56YU",
+      "location": "Canadian Regional HQ",
+      "subUnit": "Development",
+      "jobTitle": "Software Architect",
+      "leaveRecords": [
+        {
+          "leaveType": "CAN - Maternity",
+          "entitlements": 10,
+          "pendingApproval": 3,
+          "scheduled": 4,
+          "taken": 1,
+          "balance": 2,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "LMN8 76XY",
+      "location": "New York Sales Office",
+      "subUnit": "Human Resources",
+      "jobTitle": "Finance Manager",
+      "leaveRecords": [
+        {
+          "leaveType": "CAN - Vacation",
+          "entitlements": 8,
+          "pendingApproval": 2,
+          "scheduled": 3,
+          "taken": 2,
+          "balance": 1,
+          "leavePeriodStart": "2024-01-01",
+          "leavePeriodEnd": "2024-12-31"
+        }
+      ]
+    },
+    {
+      "employee": "GHI5 32UV",
+      "location": "Texas R & D",
+      "subUnit": "Technical Support",
+      "jobTitle": "Account Assistant",
+      "leaveRecords": [
+        {
+          "leaveType": "US - Bereavement",
+          "entitlements": 7,
+          "pendingApproval": 1,
+          "scheduled": 2,
+          "taken": 3,
+          "balance": 1,
           "leavePeriodStart": "2024-01-01",
           "leavePeriodEnd": "2024-12-31"
         }

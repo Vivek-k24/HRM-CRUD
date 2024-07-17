@@ -1,0 +1,47 @@
+<div class="container">
+    <h3>My Leave Entitlements and Usage Report</h3>
+    <h3>User -> ABDC 010Z</h3>
+    <form [formGroup]="leaveReportForm" (ngSubmit)="onSubmit()">
+      <div class="row form-group">
+        <div class="col-md-12">
+          <label for="leavePeriod">Leave Period*</label>
+          <select id="leavePeriod" class="form-control" formControlName="leavePeriod">
+            <option *ngFor="let period of leavePeriods" [value]="period.label">{{ period.label }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">Generate</button>
+      </div>
+    </form>
+  
+    <div *ngIf="showTable" class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Leave Type</th>
+            <th>Leave Entitlements (Days)</th>
+            <th>Leave Pending Approval (Days)</th>
+            <th>Leave Scheduled (Days)</th>
+            <th>Leave Taken (Days)</th>
+            <th>Leave Balance (Days)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let record of filteredRecords">
+            <ng-container *ngFor="let leave of record.leaveRecords">
+              <tr>
+                <td>{{ leave.leaveType }}</td>
+                <td>{{ leave.entitlements }}</td>
+                <td>{{ leave.pendingApproval }}</td>
+                <td>{{ leave.scheduled }}</td>
+                <td>{{ leave.taken }}</td>
+                <td>{{ leave.balance }}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

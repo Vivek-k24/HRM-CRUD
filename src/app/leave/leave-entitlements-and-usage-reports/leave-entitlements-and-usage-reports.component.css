@@ -1,8 +1,9 @@
 .container {
     width: 100%;
-    max-width: 1200px;
-    margin: 20px auto;
+    max-width: 1000px;
+    margin-top: 20px ;
     padding: 30px;
+    margin-left: 245px;
     border: 1px solid #dee2e6;
     background-color: #ffffff;
     border-radius: 8px;

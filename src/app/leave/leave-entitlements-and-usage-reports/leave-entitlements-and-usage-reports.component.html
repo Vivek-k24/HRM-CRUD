@@ -47,7 +47,6 @@
             <option value="US - Maternity">US - Maternity</option>
             <option value="US - Personal">US - Personal</option>
             <option value="US - Vacation">US - Vacation</option>
-
           </select>
         </div>
         <div class="col-md-6">
@@ -86,62 +85,47 @@
           </select>
         </div>
       </div>
-      <div class="row form-group select-group">
+      <div class="row form-group">
         <div class="col-md-6">
           <label for="jobTitle">Job Title</label>
-          <select id="jobTitle" class="form-control" formControlName="jobTitle">
-            <option value="">-- Select --</option>
-            <option value="Account Assistant">Account Assistant</option>
-            <option value="Automation Tester">Automation Tester</option>
-            <option value="Chief Executive Officer">Chief Executive Officer</option>
-          </select>
+          <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle">
         </div>
         <div class="col-md-6">
           <label for="includePastEmployees">Include Past Employees</label>
-          <input type="checkbox" id="includePastEmployees" class="form-control" formControlName="includePastEmployees">
+          <input type="checkbox" id="includePastEmployees" formControlName="includePastEmployees">
         </div>
       </div>
     </div>
-
-    <div class="btn-group">
-      <button type="submit" class="btn btn-primary">Generate</button>
-    </div>
+    <button type="submit" class="btn btn-primary">Generate</button>
   </form>
 
-  <!-- Table to display the report -->
-  <div *ngIf="showTable" class="table-responsive">
+  <div *ngIf="showTable">
+    <h4>Generated Leave Records</h4>
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>Employee</th>
-          <th>Location</th>
-          <th>Sub Unit</th>
-          <th>Job Title</th>
+          <th>Employee Name</th>
           <th>Leave Type</th>
-          <th>Entitlements (Days)</th>
-          <th>Pending Approval (Days)</th>
-          <th>Scheduled (Days)</th>
-          <th>Taken (Days)</th>
-          <th>Balance (Days)</th>
+          <th>Entitlements</th>
+          <th>Pending Approval</th>
+          <th>Scheduled</th>
+          <th>Taken</th>
+          <th>Balance</th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let record of filteredRecords">
-          <ng-container *ngFor="let leave of record.leaveRecords">
-            <tr *ngIf="!leaveReportForm.get('leaveType')?.value || leave.leaveType === leaveReportForm.get('leaveType')?.value">
-              <td>{{ record.employee }}</td>
-              <td>{{ record.location }}</td>
-              <td>{{ record.subUnit }}</td>
-              <td>{{ record.jobTitle }}</td>
-              <td>{{ leave.leaveType }}</td>
-              <td>{{ leave.entitlements }}</td>
-              <td>{{ leave.pendingApproval }}</td>
-              <td>{{ leave.scheduled }}</td>
-              <td>{{ leave.taken }}</td>
-              <td>{{ leave.balance }}</td>
-            </tr>
-          </ng-container>
-        </ng-container>
+        <tr *ngIf="filteredRecords.length === 0">
+          <td colspan="7" class="text-center">No records found</td>
+        </tr>
+        <tr *ngFor="let record of filteredRecords">
+          <td>{{ record.employeeId }}</td>
+          <td>{{ record.leaveType }}</td>
+          <td>{{ record.entitlements }}</td>
+          <td>{{ record.pendingApproval }}</td>
+          <td>{{ record.scheduled }}</td>
+          <td>{{ record.taken }}</td>
+          <td>{{ record.balance }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

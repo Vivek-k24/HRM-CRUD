@@ -1,35 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LeaveRecord } from '../models/leave-record.model';
 
-interface LeaveRecord {
-  leaveType: string;
-  entitlements: number;
-  pendingApproval: number;
-  scheduled: number;
-  taken: number;
-  balance: number;
-  leavePeriodStart: string;
-  leavePeriodEnd: string;
-}
-
-interface EmployeeData {
-  employee: string;
-  location: string;
-  subUnit: string;
-  jobTitle: string;
-  leaveRecords: LeaveRecord[];
-}
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRecordsService {
-  private dataUrl = 'http://localhost:3000/employee-data';
+  private apiUrl = 'https://localhost:5001/api/leaverecords';
 
   constructor(private http: HttpClient) { }
 
-  getLeaveRecords(): Observable<{ 'employee-data': EmployeeData[] }> {
-    return this.http.get<{ 'employee-data': EmployeeData[] }>(this.dataUrl);
+  getLeaveRecords(): Observable<LeaveRecord[]> {
+    return this.http.get<LeaveRecord[]>(this.apiUrl);
+  }
+
+  getLeaveRecord(id: number): Observable<LeaveRecord> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<LeaveRecord>(url);
+  }
+
+  addLeaveRecord(leaveRecord: LeaveRecord): Observable<LeaveRecord> {
+    return this.http.post<LeaveRecord>(this.apiUrl, leaveRecord, httpOptions);
+  }
+
+  updateLeaveRecord(id: number, leaveRecord: LeaveRecord): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.put(url, leaveRecord, httpOptions);
+  }
+
+  deleteLeaveRecord(id: number): Observable<LeaveRecord> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<LeaveRecord>(url, httpOptions);
+  }
+
+  getFilteredLeaveRecords(params: any): Observable<LeaveRecord[]> {
+    return this.http.get<LeaveRecord[]>(`${this.apiUrl}/filter`, { params: new HttpParams({ fromObject: params }) });
   }
 }
