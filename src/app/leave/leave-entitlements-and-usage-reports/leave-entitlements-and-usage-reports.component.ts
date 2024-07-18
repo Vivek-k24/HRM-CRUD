@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LeaveRecordsService } from '../../services/leave-records.service';
 import { LeaveRecord } from '../../models/leave-record.model';
 
@@ -15,10 +15,9 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private leaveRecordsService: LeaveRecordsService) {
     this.leaveReportForm = this.fb.group({
-      generateFor: ['leaveType'],
+      generateFor: ['leaveType', Validators.required],
       employeeName: [''],
-      leavePeriodStart: [''],
-      leavePeriodEnd: [''],
+      leavePeriod: ['', Validators.required],
       leaveType: [''],
       location: [''],
       subUnit: [''],
@@ -30,17 +29,25 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
+    if (this.leaveReportForm.invalid) {
+      console.error('Form is invalid');
+      return;
+    }
+
     const filters = this.leaveReportForm.value;
-    this.leaveRecordsService.getFilteredLeaveRecords(filters).subscribe(
-      (data: LeaveRecord[]) => {
+    console.log('Filters:', filters);
+
+    this.leaveRecordsService.getFilteredLeaveRecords(filters).subscribe({
+      next: (data: LeaveRecord[]) => {
+        console.log('Data received:', data);
         this.filteredRecords = data;
         this.showTable = true;
       },
-      error => {
+      error: (error) => {
         console.error('Error fetching filtered leave records', error);
         this.filteredRecords = [];
         this.showTable = true;
       }
-    );
+    });
   }
 }

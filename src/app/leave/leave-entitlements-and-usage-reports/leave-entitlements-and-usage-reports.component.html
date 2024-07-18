@@ -21,12 +21,14 @@
       </div>
       <div class="row form-group">
         <div class="col-md-12">
-          <label for="leavePeriodStart">Leave Period *</label>
-          <div class="date-range-group">
-            <input type="date" id="leavePeriodStart" class="form-control" formControlName="leavePeriodStart">
-            <span>to</span>
-            <input type="date" id="leavePeriodEnd" class="form-control" formControlName="leavePeriodEnd">
-          </div>
+          <label for="leavePeriod">Leave Period *</label>
+          <select id="leavePeriod" class="form-control" formControlName="leavePeriod">
+            <option value="">-- Select --</option>
+            <option value="2024">01/01/2024 - 12/31/2024</option>
+            <option value="2023">01/01/2023 - 12/31/2023</option>
+            <option value="2022">01/01/2022 - 12/31/2022</option>
+            <option value="2021">01/01/2021 - 12/31/2021</option>
+          </select>
         </div>
       </div>
     </div>
@@ -35,7 +37,7 @@
     <div *ngIf="leaveReportForm.get('generateFor')?.value === 'leaveType'">
       <div class="row form-group select-group">
         <div class="col-md-6">
-          <label for="leaveType">Leave Type</label>
+          <label for="leaveType">Leave Type *</label>
           <select id="leaveType" class="form-control" formControlName="leaveType">
             <option value="CAN - Bereavement">CAN - Bereavement</option>
             <option value="CAN - FMLA">CAN - FMLA</option>
@@ -50,12 +52,14 @@
           </select>
         </div>
         <div class="col-md-6">
-          <label for="leavePeriodStart">Leave Period *</label>
-          <div class="date-range-group">
-            <input type="date" id="leavePeriodStart" class="form-control" formControlName="leavePeriodStart">
-            <span>to</span>
-            <input type="date" id="leavePeriodEnd" class="form-control" formControlName="leavePeriodEnd">
-          </div>
+          <label for="leaveTypeLeavePeriod">Leave Period *</label>
+          <select id="leaveTypeLeavePeriod" class="form-control" formControlName="leavePeriod">
+            <option value="">-- Select --</option>
+            <option value="2024">01/01/2024 - 12/31/2024</option>
+            <option value="2023">01/01/2023 - 12/31/2023</option>
+            <option value="2022">01/01/2022 - 12/31/2022</option>
+            <option value="2021">01/01/2021 - 12/31/2021</option>
+          </select>
         </div>
       </div>
       <div class="row form-group select-group">
@@ -88,7 +92,13 @@
       <div class="row form-group">
         <div class="col-md-6">
           <label for="jobTitle">Job Title</label>
-          <input type="text" id="jobTitle" class="form-control" formControlName="jobTitle">
+          <select id="jobTitle" class="form-control" formControlName="jobTitle">
+            <option value="">-- Select --</option>
+            <option value="Sales Representative">Sales Representative</option>
+            <option value="Marketing Manager">Marketing Manager</option>
+            <option value="Quality Assurance">Quality Assurance</option>
+            <option value="TechOps">TechOps</option>
+          </select>
         </div>
         <div class="col-md-6">
           <label for="includePastEmployees">Include Past Employees</label>
