@@ -7,16 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class LeaveRecordsService {
 
-  private apiUrl = 'http://localhost:5080/api/LeaveRecords'; // Update with your API URL
+  private apiUrl = 'http://localhost:5080/api/LeaveRecords';
 
   constructor(private http: HttpClient) { }
 
   getLeaveRecordsByEmployee(employeeName: string, leavePeriod: string): Observable<any> {
+    console.log(`Calling getLeaveRecordsByEmployee with ${employeeName}, ${leavePeriod}`);
     return this.http.get<any>(`${this.apiUrl}/employee?employeeName=${employeeName}&leavePeriod=${leavePeriod}`);
   }
   
 
   getLeaveRecordsByFilters(leaveType: string, leavePeriod: string, location: string, subUnit: string, jobTitle: string, includePastEmployees: boolean): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/filters?leaveType=${leaveType}&leavePeriod=${leavePeriod}&location=${location}&subUnit=${subUnit}&jobTitle=${jobTitle}&includePastEmployees=${includePastEmployees}`);
+    const url = `${this.apiUrl}/filters?leaveType=${leaveType}&leavePeriod=${leavePeriod}&location=${location}&subUnit=${subUnit}&jobTitle=${jobTitle}&includePastEmployees=${includePastEmployees}`;
+    console.log(`Calling getLeaveRecordsByFilters with URL: ${url}`);
+    return this.http.get<any>(url);
   }
 }

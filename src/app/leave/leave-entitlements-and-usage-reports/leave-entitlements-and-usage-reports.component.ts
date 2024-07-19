@@ -29,6 +29,7 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
 
   onSubmit(): void {
     const formValues = this.leaveReportForm.value;
+
     if (formValues.generateFor === 'employee') {
       const employeeName = formValues.employeeName;
       const leavePeriod = formValues.leavePeriod;
