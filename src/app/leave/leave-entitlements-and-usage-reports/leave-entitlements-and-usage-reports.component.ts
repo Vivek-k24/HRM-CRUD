@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LeaveRecordsService } from '../../services/leave-records.service';
-import { LeaveRecord } from '../../models/leave-record.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LeaveRecordsService } from 'src/app/services/leave-records.service';
 
 @Component({
   selector: 'app-leave-entitlements-and-usage-reports',
@@ -10,14 +9,14 @@ import { LeaveRecord } from '../../models/leave-record.model';
 })
 export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
   leaveReportForm: FormGroup;
-  filteredRecords: LeaveRecord[] = [];
-  showTable: boolean = false;
+  filteredRecords: any[] = [];
+  showTable = false;
 
   constructor(private fb: FormBuilder, private leaveRecordsService: LeaveRecordsService) {
     this.leaveReportForm = this.fb.group({
-      generateFor: ['leaveType', Validators.required],
+      generateFor: [''],
       employeeName: [''],
-      leavePeriod: ['', Validators.required],
+      leavePeriod: [''],
       leaveType: [''],
       location: [''],
       subUnit: [''],
@@ -29,25 +28,35 @@ export class LeaveEntitlementsAndUsageReportsComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    if (this.leaveReportForm.invalid) {
-      console.error('Form is invalid');
-      return;
-    }
+    const formValues = this.leaveReportForm.value;
+    if (formValues.generateFor === 'employee') {
+      const employeeName = formValues.employeeName;
+      const leavePeriod = formValues.leavePeriod;
 
-    const filters = this.leaveReportForm.value;
-    console.log('Filters:', filters);
-
-    this.leaveRecordsService.getFilteredLeaveRecords(filters).subscribe({
-      next: (data: LeaveRecord[]) => {
-        console.log('Data received:', data);
+      this.leaveRecordsService.getLeaveRecordsByEmployee(employeeName, leavePeriod).subscribe(data => {
         this.filteredRecords = data;
         this.showTable = true;
-      },
-      error: (error) => {
-        console.error('Error fetching filtered leave records', error);
+      }, error => {
+        console.error('Error fetching leave records', error);
         this.filteredRecords = [];
         this.showTable = true;
-      }
-    });
+      });
+    } else {
+      const leaveType = formValues.leaveType;
+      const leavePeriod = formValues.leavePeriod;
+      const location = formValues.location;
+      const subUnit = formValues.subUnit;
+      const jobTitle = formValues.jobTitle;
+      const includePastEmployees = formValues.includePastEmployees;
+
+      this.leaveRecordsService.getLeaveRecordsByFilters(leaveType, leavePeriod, location, subUnit, jobTitle, includePastEmployees).subscribe(data => {
+        this.filteredRecords = data;
+        this.showTable = true;
+      }, error => {
+        console.error('Error fetching leave records', error);
+        this.filteredRecords = [];
+        this.showTable = true;
+      });
+    }
   }
 }

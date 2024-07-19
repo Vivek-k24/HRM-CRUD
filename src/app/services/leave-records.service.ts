@@ -1,42 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { LeaveRecord } from '../models/leave-record.model';
-
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LeaveRecordsService {
-  private apiUrl = 'https://localhost:5001/api/leaverecords';
 
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:5080/api/LeaveRecords'; // Update with your API URL
 
-  getFilteredLeaveRecords(filters: any): Observable<LeaveRecord[]> {
-    let params = new HttpParams();
-    Object.keys(filters).forEach(key => {
-      if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
-        params = params.set(key, filters[key]);
-      }
-    });
+  constructor(private http: HttpClient) { }
 
-    return this.http.get<LeaveRecord[]>(`${this.apiUrl}/filter`, { params }).pipe(
-      catchError(this.handleError)
-    );
+  getLeaveRecordsByEmployee(employeeName: string, leavePeriod: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/employee?employeeName=${employeeName}&leavePeriod=${leavePeriod}`);
   }
+  
 
-  private handleError(error: any) {
-    console.error('An error occurred', error);
-    return throwError(error);
-  }
-
-  getTest(): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}/test/test`).pipe(
-      catchError(this.handleError)
-    );
+  getLeaveRecordsByFilters(leaveType: string, leavePeriod: string, location: string, subUnit: string, jobTitle: string, includePastEmployees: boolean): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/filters?leaveType=${leaveType}&leavePeriod=${leavePeriod}&location=${location}&subUnit=${subUnit}&jobTitle=${jobTitle}&includePastEmployees=${includePastEmployees}`);
   }
 }
